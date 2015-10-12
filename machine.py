@@ -44,15 +44,23 @@ class Machine(object):
     """
     Class for machine
     """
-    
-    def __init__(self, 
-        alphabet = ALPHABET, 
+
+    def __init__(self,
+        alphabet = ALPHABET,
         blank_symbol = BLANK_SYMBOL,
         states = STATES,
         initial_state = INITIAL_STATE,
         halt_state = HALT_STATE,
         state_table = STATE_TABLE
         ):
+        """
+        states is a set for all states
+        state_table is a dictionary of dictionaries of tuples.
+            Key for the first layer dictionary is the symbol read on tape.
+            Key for the second layer dictionary is the current state.
+            The tuple is a instruction of
+                (write_value, tape_direction, next_state)
+        """
         if not initial_state in states:
             raise StateError("Unknown initial state.")
         if not halt_state in states:
@@ -62,23 +70,19 @@ class Machine(object):
         self._state = initial_state
         self._halt_state = halt_state
         self._state_table = state_table
-    
+
     def get_state(self):
         return self._state
-    
+
     def get_tape(self):
         return self._tape
-    
+
     def run(self):
-        MOVE = {
-            "L": self._tape.move_left,
-            "R": self._tape.move_right
-        }
         if self._state == self._halt_state:
             raise HaltedError("Halted.")
         instruction = self._state_table[self._tape.read()][self._state]
         self._tape.write(instruction[0])
-        MOVE[instruction[1]]()
-        if not instruction[2] in states:
+        self._tape.move(instruction[1])
+        if not instruction[2] in self._states:
             raise StateError("Unknown state.")
         self._state = instruction[2]

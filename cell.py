@@ -2,6 +2,12 @@
 cell.py: Cell module for SimpleTuringMacine
 """
 
+# Translate to full directions
+DIRECTIONS = {
+    "L": "Left",
+    "R": "Right"
+}
+
 class Error(Exception):
     """
     Base class for exceptions in this module
@@ -14,34 +20,28 @@ class CellError(Error):
     """
     pass
 
-class Cell():
+class Cell(object):
     """
     Class for cell in a tape
     """
 
-    def __init__(self, data = None, left_cell = None, right_cell = None):
+    def __init__(self, data = None, left_neighbor = None, right_neighbor = None):
         self._data = data
-        self._left_cell = left_cell
-        self._right_cell = right_cell
+        self._neighbors = {
+            "L": left_neighbor,
+            "R": right_neighbor
+        }
 
     def get_data(self):
         return self._data
-    
+
     def set_data(self, data):
         self._data = data
-        
-    def get_left_cell(self):
-        if self._left_cell == None:
-            raise CellError("Left cell does not exist.")
-        return self._left_cell
 
-    def get_right_cell(self):
-        if self._right_cell == None:
-            raise CellError("Right cell does not exist.")
-        return self._right_cell
+    def get_neighbor(self, direction):
+        if self._neighbors[direction] == None:
+            raise CellError("%s cell does not exist." % DIRECTIONS[direction])
+        return self._neighbors[direction]
 
-    def set_left_cell(self, left_cell):
-        self._left_cell = left_cell
-
-    def set_right_cell(self, right_cell):
-        self._right_cell = right_cell
+    def set_neighbor(self, direction, neighbor):
+        self._neighbors[direction] = neighbor
