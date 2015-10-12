@@ -42,6 +42,24 @@ class Machine(object):
     def get_tape(self):
         return self._tape
 
+    def load_tape(self, tape):
+        """
+        load tape into machine from left to right.
+        """
+
+        DIRECTION = "R"
+        DIRECTION_REVERSE = "L"
+
+        for dummy in range(len(tape) - 1):
+            self._tape.move(DIRECTION)
+
+        while len(tape) > 1:
+            self._tape.write(tape.pop())
+            self._tape.move(DIRECTION_REVERSE)
+
+        # Last one does not move.
+        self._tape.write(tape.pop())
+
     def run(self):
         if self._state == self._halt_state:
             raise exception.HaltedError("Halted.")
