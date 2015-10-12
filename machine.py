@@ -3,24 +3,7 @@ machine.py: SimpleTuringMacine
 """
 
 import tape
-
-class Error(Exception):
-    """
-    Base class for exceptions in this module
-    """
-    pass
-
-class StateError(Error):
-    """
-    Exception raised for unknown state.
-    """
-    pass
-
-class HaltedError(Error):
-    """
-    Exception raised for halted machine.
-    """
-    pass
+import exception
 
 class Machine(object):
     """
@@ -44,9 +27,9 @@ class Machine(object):
                 (write_value, tape_direction, next_state)
         """
         if not initial_state in states:
-            raise StateError("Unknown initial state.")
+            raise exception.StateError("Unknown initial state.")
         if not halt_state in states:
-            raise StateError("Unknown halt state.")
+            raise exception.StateError("Unknown halt state.")
         self._tape = tape.Tape(alphabet, blank_symbol)
         self._states = states
         self._state = initial_state
@@ -61,10 +44,10 @@ class Machine(object):
 
     def run(self):
         if self._state == self._halt_state:
-            raise HaltedError("Halted.")
+            raise exception.HaltedError("Halted.")
         instruction = self._state_table[self._tape.read()][self._state]
         self._tape.write(instruction[0])
         self._tape.move(instruction[1])
         if not instruction[2] in self._states:
-            raise StateError("Unknown state.")
+            raise exception.StateError("Unknown state.")
         self._state = instruction[2]

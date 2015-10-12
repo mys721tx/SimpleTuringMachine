@@ -2,19 +2,8 @@
 tape.py: Tape module for SimpleTuringMacine
 """
 
+import exception
 import cell
-
-class Error(Exception):
-    """
-    Base class for exceptions in this module
-    """
-    pass
-
-class AlphabetError(Error):
-    """
-    Exception raised for symbol not exist in the alphabet.
-    """
-    pass
 
 class Tape(object):
     """
@@ -28,7 +17,7 @@ class Tape(object):
         """
         self._alphabet = alphabet
         if not blank_symbol in self._alphabet:
-            raise AlphabetError("Symbol not exist in the alphabet.")
+            raise exception.AlphabetError("Symbol not exist in the alphabet.")
         self._blank_symbol = blank_symbol
         self._current_cell = cell.Cell(self._blank_symbol)
         self._left_most = self._current_cell
@@ -45,7 +34,7 @@ class Tape(object):
             tape_string += str(working_cell.get_data())
             try:
                 working_cell = working_cell.get_neighbor("R")
-            except cell.CellError:
+            except exception.CellError:
                 break
         string = tape_string + "\n" + head
         return string
@@ -59,7 +48,7 @@ class Tape(object):
 
         try:
             self._current_cell = self._current_cell.get_neighbor(direction)
-        except cell.CellError:
+        except exception.CellError:
             temp = cell.Cell(self._blank_symbol)
             self._current_cell.set_neighbor(direction, temp)
             temp.set_neighbor(DIRECTION_REVERSE[direction], self._current_cell)
@@ -72,5 +61,5 @@ class Tape(object):
 
     def write(self, value):
         if not value in self._alphabet:
-            raise AlphabetError("Symbol not exist in the alphabet.")
+            raise exception.AlphabetError("Symbol not exist in the alphabet.")
         return self._current_cell.set_data(value)

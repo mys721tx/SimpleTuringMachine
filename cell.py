@@ -2,23 +2,13 @@
 cell.py: Cell module for SimpleTuringMacine
 """
 
+import exception
+
 # Translate to full directions
 DIRECTIONS = {
     "L": "Left",
     "R": "Right"
 }
-
-class Error(Exception):
-    """
-    Base class for exceptions in this module
-    """
-    pass
-
-class CellError(Error):
-    """
-    Exception raised for none-existing cell
-    """
-    pass
 
 class Cell(object):
     """
@@ -40,7 +30,7 @@ class Cell(object):
 
     def get_neighbor(self, direction):
         if self._neighbors[direction] == None:
-            raise CellError("%s cell does not exist." % DIRECTIONS[direction])
+            raise exception.CellError("%s cell does not exist." % DIRECTIONS[direction])
         return self._neighbors[direction]
 
     def set_neighbor(self, direction, neighbor):
