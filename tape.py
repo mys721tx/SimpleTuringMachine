@@ -30,7 +30,7 @@ class Tape(object):
             if working_cell == self._current_cell:
                 head += "^"
             else:
-                head += " "
+                head += " " * len(str(working_cell.get_data()))
             tape_string += str(working_cell.get_data())
             try:
                 working_cell = working_cell.get_neighbor("R")
