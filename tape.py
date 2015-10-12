@@ -21,7 +21,7 @@ class Tape(object):
     Class for tape
     """
 
-    def __init__(self, alphabet = None, blank_symbol = None):
+    def __init__(self, alphabet = set(), blank_symbol = None):
         """
         alphabet is a set of symbols used in the tape.
         blank_symbol is the symbol used as blank symbol.
@@ -37,13 +37,9 @@ class Tape(object):
         tape_string = ""
         head = ""
         working_cell = self._left_most
-        is_head_print = False
         while True:
-            if is_head_print:
-                head += " "
-            elif working_cell == self._current_cell:
+            if working_cell == self._current_cell:
                 head += "^"
-                is_head_print = True
             else:
                 head += " "
             tape_string += str(working_cell.get_data())

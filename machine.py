@@ -4,24 +4,6 @@ machine.py: SimpleTuringMacine
 
 import tape
 
-ALPHABET = set([0, 1])
-BLANK_SYMBOL = 0
-STATES = set(["A", "B", "C", "HALT"])
-INITIAL_STATE = "A"
-HALT_STATE = "HALT"
-STATE_TABLE = {
-    0:{
-        "A": (1, "R", "B"),
-        "B": (1, "L", "A"),
-        "C": (1, "L", "B")
-    },
-    1:{
-        "A": (1, "L", "C"),
-        "B": (1, "R", "B"),
-        "C": (1, "R", "HALT")
-    }
-}
-
 class Error(Exception):
     """
     Base class for exceptions in this module
@@ -46,12 +28,12 @@ class Machine(object):
     """
 
     def __init__(self,
-        alphabet = ALPHABET,
-        blank_symbol = BLANK_SYMBOL,
-        states = STATES,
-        initial_state = INITIAL_STATE,
-        halt_state = HALT_STATE,
-        state_table = STATE_TABLE
+        alphabet = set(),
+        blank_symbol = None,
+        states = set(),
+        initial_state = None,
+        halt_state = None,
+        state_table = dict()
         ):
         """
         states is a set for all states
