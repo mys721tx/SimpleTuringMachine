@@ -3,7 +3,12 @@ SimpleTuringMachine: A python implementation of the Turing Machine
 
 """
 
-from exception import *
-from cell import *
-from tape import *
-from machine import *
+from SimpleTuringMachine.exception import Error
+from SimpleTuringMachine.exception import AlphabetError
+from SimpleTuringMachine.exception import CellError
+from SimpleTuringMachine.exception import StateError
+from SimpleTuringMachine.exception import HaltedError
+
+from SimpleTuringMachine.cell import Cell
+from SimpleTuringMachine.tape import Tape
+from SimpleTuringMachine.machine import Machine

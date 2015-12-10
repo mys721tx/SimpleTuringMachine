@@ -2,8 +2,11 @@
 machine.py: SimpleTuringMacine
 """
 
-import tape
-import exception
+import SimpleTuringMachine.tape as tape
+import SimpleTuringMachine.exception as exception
+
+DIRECTION = "R"
+DIRECTION_REVERSE = "L"
 
 class Machine(object):
     """
@@ -11,61 +14,70 @@ class Machine(object):
     """
 
     def __init__(self,
-        alphabet = set(),
-        blank_symbol = None,
-        states = set(),
-        initial_state = None,
-        halt_state = None,
-        state_table = dict()
-        ):
+                 alphabet,
+                 states,
+                 initial_state,
+                 state_table
+                ):
         """
-        states is a set for all states
+        states is a list for all states, stored internally as a set.
         state_table is a dictionary of dictionaries of tuples.
             Key for the first layer dictionary is the symbol read on tape.
             Key for the second layer dictionary is the current state.
             The tuple is a instruction of
                 (write_value, tape_direction, next_state)
+        first element of states is the halt state.
         """
-        if not initial_state in states:
+        if isinstance(states, list):
+            self._states = set(states)
+        else:
+            raise ValueError("states must be a list.")
+        if initial_state not in states:
             raise exception.StateError("Unknown initial state.")
-        if not halt_state in states:
-            raise exception.StateError("Unknown halt state.")
-        self._tape = tape.Tape(alphabet, blank_symbol)
-        self._states = states
+        self._tape = tape.Tape(alphabet)
         self._state = initial_state
-        self._halt_state = halt_state
+        self._halt_state = states[0]
         self._state_table = state_table
 
     def get_state(self):
+        """
+        getter for machine state.
+        """
+
         return self._state
 
     def get_tape(self):
+        """
+        getter for tape.
+        """
+
         return self._tape
 
-    def load_tape(self, tape):
+    def load_tape(self, tape_list):
         """
         load tape into machine from left to right.
         """
 
-        DIRECTION = "R"
-        DIRECTION_REVERSE = "L"
-
-        for dummy in range(len(tape) - 1):
+        for dummy in range(len(tape_list) - 1):
             self._tape.move(DIRECTION)
 
-        while len(tape) > 1:
-            self._tape.write(tape.pop())
+        while len(tape_list) > 1:
+            self._tape.write(tape_list.pop())
             self._tape.move(DIRECTION_REVERSE)
 
         # Last one does not move.
-        self._tape.write(tape.pop())
+        self._tape.write(tape_list.pop())
 
     def run(self):
-        if self._state == self._halt_state:
+        """
+        execuate instructions until machine halts.
+        """
+
+        if self._state is self._halt_state:
             raise exception.HaltedError("Halted.")
         instruction = self._state_table[self._tape.read()][self._state]
         self._tape.write(instruction[0])
         self._tape.move(instruction[1])
-        if not instruction[2] in self._states:
+        if instruction[2] not in self._states:
             raise exception.StateError("Unknown state.")
         self._state = instruction[2]
