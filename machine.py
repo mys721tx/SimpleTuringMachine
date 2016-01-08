@@ -18,13 +18,13 @@ class Machine(object):
                 ):
         """
         states is a list for all states, stored internally as a set.
-        state_table is a dictionary of dictionaries of tuples.
-            Key for the first layer dictionary is the symbol read on tape.
-            Key for the second layer dictionary is the current state.
+        state_table is a dictionary of tuples.
+            The current cell value and machine state forms the index tuples.
             The tuple is a instruction of
-                (write_value, tape_direction, next_state)
+                (write_value, move_direction, next_state)
         first element of states is the halt state.
         """
+
         if isinstance(states, list):
             self._states = set(states)
         else:
@@ -64,9 +64,14 @@ class Machine(object):
 
         if self._state is self._halt_state:
             raise exception.HaltedError("Halted.")
-        instruction = self._state_table[self._tape.read()][self._state]
-        self._tape.write(instruction[0])
-        self._tape.move(instruction[1])
-        if instruction[2] not in self._states:
+
+        write_value, move_direction, next_state = self._state_table[
+            (self._tape.read(), self._state)
+        ]
+
+        if next_state not in self._states:
             raise exception.StateError("Unknown state.")
-        self._state = instruction[2]
+
+        self._tape.write(write_value)
+        self._tape.move(move_direction)
+        self._state = next_state
