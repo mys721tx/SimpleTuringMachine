@@ -5,9 +5,6 @@ machine.py: SimpleTuringMacine
 import SimpleTuringMachine.tape as tape
 import SimpleTuringMachine.exception as exception
 
-DIRECTION = "R"
-DIRECTION_REVERSE = "L"
-
 class Machine(object):
     """
     Class for machine
@@ -32,7 +29,7 @@ class Machine(object):
             self._states = set(states)
         else:
             raise ValueError("states must be a list.")
-        if initial_state not in states:
+        if initial_state not in self._states:
             raise exception.StateError("Unknown initial state.")
         self._tape = tape.Tape(alphabet)
         self._state = initial_state
@@ -53,20 +50,12 @@ class Machine(object):
 
         return self._tape
 
-    def load_tape(self, tape_list):
+    def load_tape(self, tape_iterable):
         """
-        load tape into machine from left to right.
+        load tape.
         """
 
-        for dummy in range(len(tape_list) - 1):
-            self._tape.move(DIRECTION)
-
-        while len(tape_list) > 1:
-            self._tape.write(tape_list.pop())
-            self._tape.move(DIRECTION_REVERSE)
-
-        # Last one does not move.
-        self._tape.write(tape_list.pop())
+        self._tape.load(tape_iterable)
 
     def run(self):
         """

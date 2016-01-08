@@ -14,12 +14,6 @@ class AlphabetError(Error):
     """
     pass
 
-class CellError(Error):
-    """
-    Exception raised for none-existing cell
-    """
-    pass
-
 class StateError(Error):
     """
     Exception raised for unknown state.
