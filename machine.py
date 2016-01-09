@@ -16,7 +16,7 @@ class Machine(object):
                  states,
                  initial_state,
                  state_table
-                 ):
+                ):
         """
         states is a list for all states, stored internally as a set.
         state_table is a dictionary of tuples.
@@ -30,8 +30,10 @@ class Machine(object):
             self._states = set(states)
         else:
             raise ValueError("states must be a list.")
+
         if initial_state not in self._states:
             raise exception.StateError("Unknown initial state.")
+
         self._tape = tape.Tape(alphabet)
         self._state = initial_state
         self._halt_state = states[0]

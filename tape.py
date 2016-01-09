@@ -17,10 +17,12 @@ class Tape(object):
             stored internally as a set.
         first element of alphabet is the blank symbol.
         """
+
         if isinstance(alphabet, list):
             self._alphabet = set(alphabet)
         else:
             raise ValueError("alphabet must be a list.")
+
         self._blank_symbol = alphabet[0]
         self._queue = collections.deque([self._blank_symbol])
         self._current_cell = 0
@@ -30,8 +32,21 @@ class Tape(object):
         String repersentation of Tape object.
         """
 
-        tape_string = "".join(str(cell) for cell in self._queue)
-        return tape_string
+        if __debug__:
+            tape_string = ""
+            head_string = ""
+            for index, value in enumerate(self._queue):
+                symbol_string = str(value)
+                tape_string += symbol_string
+                if index == self._current_cell:
+                    head_string += "^" + " " * (len(symbol_string) - 1)
+                else:
+                    head_string += " " * len(symbol_string)
+            display_string = tape_string + "\n" + head_string
+        else:
+            display_string = "".join(str(cell) for cell in self._queue)
+
+        return display_string
 
     def move(self, direction):
         """
