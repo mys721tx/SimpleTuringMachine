@@ -5,6 +5,7 @@ tape.py: Tape module for SimpleTuringMacine
 import collections
 import SimpleTuringMachine.exception as exception
 
+
 class Tape(object):
     """
     Class for tape
@@ -12,7 +13,8 @@ class Tape(object):
 
     def __init__(self, alphabet):
         """
-        alphabet is a list of symbols used in the tape, stored internally as a set.
+        alphabet is a list of symbols used in the tape,
+            stored internally as a set.
         first element of alphabet is the blank symbol.
         """
         if isinstance(alphabet, list):

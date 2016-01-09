@@ -5,6 +5,7 @@ machine.py: SimpleTuringMacine
 import SimpleTuringMachine.tape as tape
 import SimpleTuringMachine.exception as exception
 
+
 class Machine(object):
     """
     Class for machine
@@ -15,7 +16,7 @@ class Machine(object):
                  states,
                  initial_state,
                  state_table
-                ):
+                 ):
         """
         states is a list for all states, stored internally as a set.
         state_table is a dictionary of tuples.
