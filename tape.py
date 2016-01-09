@@ -36,18 +36,23 @@ class Tape(object):
     def move(self, direction):
         """
         Move the current cell to given position.
+            True is left.
+            False is right.
         If that cell does not exist then create one.
         """
 
-        if direction == "L":
-            if self._current_cell == 0:
-                self._queue.appendleft(self._blank_symbol)
+        if isinstance(direction, bool):
+            if direction:
+                if self._current_cell == 0:
+                    self._queue.appendleft(self._blank_symbol)
+                else:
+                    self._current_cell -= 1
             else:
-                self._current_cell -= 1
+                self._current_cell += 1
+                if self._current_cell == len(self._queue):
+                    self._queue.append(self._blank_symbol)
         else:
-            self._current_cell += 1
-            if self._current_cell == len(self._queue):
-                self._queue.append(self._blank_symbol)
+            raise ValueError("Direction must be a bool.")
 
     def load(self, tape_iterable):
         """
