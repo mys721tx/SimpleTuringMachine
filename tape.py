@@ -35,13 +35,15 @@ class Tape(object):
         if __debug__:
             tape_string = ""
             head_string = ""
+    
             for index, value in enumerate(self._queue):
                 symbol_string = str(value)
                 tape_string += symbol_string
                 if index == self._current_cell:
-                    head_string += "^" + " " * (len(symbol_string) - 1)
+                    head_string += "^" * len(symbol_string)
                 else:
                     head_string += " " * len(symbol_string)
+
             display_string = tape_string + "\n" + head_string
         else:
             display_string = "".join(str(cell) for cell in self._queue)
