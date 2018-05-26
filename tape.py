@@ -2,8 +2,9 @@
 tape.py: Tape module for SimpleTuringMacine
 """
 
-import collections
-import SimpleTuringMachine.exception as exception
+from collections import deque
+
+from .exception import AlphabetError
 
 
 class Tape(object):
@@ -24,7 +25,7 @@ class Tape(object):
             raise ValueError("alphabet must be a list.")
 
         self._blank_symbol = alphabet[0]
-        self._queue = collections.deque([self._blank_symbol])
+        self._queue = deque([self._blank_symbol])
         self._current_cell = 0
 
     def __str__(self):
@@ -35,7 +36,7 @@ class Tape(object):
         if __debug__:
             tape_string = ""
             head_string = ""
-    
+
             for index, value in enumerate(self._queue):
                 symbol_string = str(value)
                 tape_string += symbol_string
@@ -77,9 +78,9 @@ class Tape(object):
         """
 
         if set(tape_iterable) >= self._alphabet:
-            raise exception.AlphabetError("Tape contains unknown symbols.")
+            raise AlphabetError("Tape contains unknown symbols.")
         else:
-            self._queue = collections.deque(tape_iterable)
+            self._queue = deque(tape_iterable)
 
     def read(self):
         """
@@ -94,6 +95,6 @@ class Tape(object):
         """
 
         if value not in self._alphabet:
-            raise exception.AlphabetError("Symbol not exist in the alphabet.")
+            raise AlphabetError("Symbol not exist in the alphabet.")
         else:
             self._queue[self._current_cell] = value
